@@ -4,7 +4,8 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css';
 import axios from 'axios';
 import {Video} from '../type';
-
+import VideoCard from '../components/VideoCard';
+import NoResults from '../components/NoResults';
 const inter = Inter({ subsets: ['latin'] })
 interface IProps {
   videos: Video[]
@@ -16,9 +17,11 @@ export default function Home({videos}: IProps) {
     <>
       <div className='flex flex-col gap-10 videos h-full'>
           {videos.length ? (
-              
+              videos?.map((video: Video) => (
+                <VideoCard post={video} isShowingOnHome  key={video._id} />
+              )) 
           ) : (
-
+            <NoResults text='No Videos'/>
           )}
       </div>
     </>
