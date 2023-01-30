@@ -86,6 +86,7 @@ const Detail = ({postDetails}: IProps) => {
             <div className='lg:h-[1000px] h-[60vh]'>
                 <video
                     ref={videoRef}
+                    onClick={onVideoClick}
                     loop
                     src={post?.video?.asset.url}
                     className="h-full cursor-pointer"
@@ -94,7 +95,7 @@ const Detail = ({postDetails}: IProps) => {
             </div>
             <div className='absolute top-[45%] left-[40%]  cursor-pointer'>
                 {!isPlaying && (
-                  <button>
+                  <button onClick={onVideoClick}>
                     <BsFillPlayFill className='text-white text-6xl lg:text-8xl' />
                   </button>
                 )}
