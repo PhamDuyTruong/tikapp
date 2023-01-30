@@ -10,7 +10,8 @@ import axios from 'axios';
 import { BASE_URL } from '../../utils';
 import { Video } from '../../type';
 import useAuthStore from '../../store/authStore';
-
+import Comments from '../../components/Comments';
+import LikeButton from '../../components/LikeButton'
 
 interface IProps {
     postDetails: Video;
@@ -43,7 +44,35 @@ const Detail = ({postDetails}: IProps) => {
           videoRef.current.muted = isVideoMuted;
         }
       }, [post, isVideoMuted]);
-      
+
+      const handleLike = async (like: boolean) => {
+        if(userProfile){
+            const res = await axios.put(`${BASE_URL}/api/like`, {
+                userId: userProfile._id,
+                postId: post._id,
+                like
+            });
+            setPost({...post, likes: res.data.likes});
+        }
+      };
+
+      const addComment = async (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+
+        if(userProfile){
+            if(comment){
+                setIsPostingComment(true);
+                const res = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
+                    userId: userProfile._id,
+                    comment
+                });
+                setPost({ ...post, comments: res.data.comments });
+                setComment('');
+                setIsPostingComment(false);
+            }
+        }
+      }
+
 
   return (
     <div className='flex w-full absolute left-0 top-0 bg-white flex-wrap lg:flex-nowrap'>
@@ -107,8 +136,20 @@ const Detail = ({postDetails}: IProps) => {
                 <p className=' text-md text-gray-600'>{post.caption}</p>
               </div>
               <div className='mt-10 px-10'>
-
+                {userProfile && <LikeButton
+                  likes={post.likes}
+                  flex='flex'
+                  handleLike={() => handleLike(true)}
+                  handleDislike={() => handleLike(false)}
+                />}
               </div>
+              <Comments
+                comment={comment}
+                setComment={setComment}
+                addComment={addComment}
+                comments={post.comments}
+                isPostingComment={isPostingComment}
+              />
             </div>
        </div>
     </div>
