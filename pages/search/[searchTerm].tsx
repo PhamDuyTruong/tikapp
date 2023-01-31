@@ -19,7 +19,7 @@ const Search = ({videos}: {videos: Video[]}) => {
     const {searchTerm}: any = router.query;
     const accounts = isAccounts ? 'border-b-2 border-black' : 'text-gray-400';
     const isVideos = !isAccounts ? 'border-b-2 border-black' : 'text-gray-400';
-    const searchedAccounts = allUsers?.filter((user: IUser) => user.userName.toLowerCase().includes(searchTerm));
+    const searchedAccounts = allUsers?.filter((user: IUser) => user?.userName.toLowerCase().includes(searchTerm));
 
   return (
     <div className='w-full'>
@@ -73,14 +73,15 @@ const Search = ({videos}: {videos: Video[]}) => {
 };
 
 export const getServerSideProps = async ({
-  params: {searchTerm}
-} : {
-    params: { searchTerm: string };
-  }) => {
-    const res = await axios.get(`${BASE_URL}/api/search/${searchTerm}`);
-    return {
-        props: { videos: res.data },
-      };
-}
+    params: {searchTerm}
+  } : {
+      params: { searchTerm: string };
+    }) => {
+      const res = await axios.get(`${BASE_URL}/api/search/${searchTerm}`);
+      return {
+          props: { videos: res.data },
+        };
+  }
+  
 
 export default Search
