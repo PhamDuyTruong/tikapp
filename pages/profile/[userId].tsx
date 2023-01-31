@@ -44,14 +44,14 @@ const Profile = ({data}: IProps) => {
           height={120}
           layout='responsive'
           className='rounded-full'
-          src={user.image}
+          src={user?.image}
           alt='user-profile'
         />
       </div>
 
       <div>
         <div className='text-md md:text-2xl font-bold tracking-wider flex gap-2 items-center justify-center lowercase'>
-          <span>{user.userName.replace(/\s+/g, '')} </span>
+          <span>{user?.userName} </span>
           <GoVerified className='text-blue-400 md:text-xl text-md' />
         </div>
         <p className='text-sm font-medium'> {user.userName}</p>
